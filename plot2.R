@@ -1,8 +1,8 @@
 library(dplyr)
 library(data.table)
 
-plot1 <- function(){
-    if (!file.exists("household_power_consumption.txt")) {
+plot2 <- function(){
+   if (!file.exists("household_power_consumption.txt")) {
         dataUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
         download.file(dataUrl, "household_power_consumption.zip")
         unzip("household_power_consumption.zip")
@@ -27,8 +27,11 @@ plot1 <- function(){
         mypowerdata <- mutate(mypowerdata,
                               DateTime = as.POSIXct(strptime(paste(Date, Time), "%d/%m/%Y %T")))
     }
-    plot1 <- hist(mypowerdata$Global_active_power, col = "red", xlab = "Global Active Power (kilowatts)", main = "Global Active Power")
-    dev.copy(png, "plot1.png", units = "px", width = 480, height = 480)
+    x <- mypowerdata$DateTime
+    y <- mypowerdata$Global_active_power
+    plot(x, y, type="n", xlab = NA, ylab = "Global Active Power (kilowatts)")
+    lines(x, y)
+    dev.copy(png, "plot2.png", units = "px", width = 480, height = 480)
     dev.off()
 }
 
