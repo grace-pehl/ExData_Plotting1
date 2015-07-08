@@ -1,7 +1,7 @@
 library(dplyr)
 library(data.table)
 
-plot2 <- function(){
+plot4 <- function(){
    if (!file.exists("household_power_consumption.txt")) {
         dataUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
         download.file(dataUrl, "household_power_consumption.zip")
@@ -28,11 +28,25 @@ plot2 <- function(){
                               DateTime = as.POSIXct(strptime(paste(Date, Time), "%d/%m/%Y %T")))
     }
     x <- mypowerdata$DateTime
-    y <- mypowerdata$Global_active_power
-    par(cex=0.75, mar=c(5,4,4,2) + 0.2) # reduce font size, increase margin
-    plot(x, y, type="n", xlab = NA, ylab = "Global Active Power (kilowatts)")
-    lines(x, y)
-    dev.copy(png, "plot2.png", units = "px", width = 480, height = 480)
+    y1 <- mypowerdata$Global_active_power
+    y2 <- mypowerdata$Voltage
+    y3a <- mypowerdata$Sub_metering_1
+    y3b <- mypowerdata$Sub_metering_2
+    y3c <- mypowerdata$Sub_metering_3
+    y4 <- mypowerdata$Global_reactive_power
+    par(mfrow=c(2, 2), lwd=0.1, cex=0.6)
+    plot(x, y1, type="n", ylab = "Global Active Power", xlab = NA)
+    lines(x, y1)
+    plot(x, y2, type="n", ylab = "Voltage", xlab = "datetime")
+    lines(x, y2)
+    plot(x, y3a, type="n", ylab = "Energy sub metering", xlab = NA)
+    lines(x, y3a)
+    lines(x, y3b, col="red")
+    lines(x, y3c, col="blue")
+    legend(x="topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), bty = "n", lty=c(1,1,1), col=c("black", "red", "blue"))
+    plot(x, y4, type="n", xlab="datetime", ylab="Global_reactive_power")
+    lines(x, y4)
+    dev.copy(png, "plot4.png", units = "px", width = 480, height = 480)
     dev.off()
 }
 

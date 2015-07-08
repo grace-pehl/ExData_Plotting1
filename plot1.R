@@ -27,6 +27,7 @@ plot1 <- function(){
         mypowerdata <- mutate(mypowerdata,
                               DateTime = as.POSIXct(strptime(paste(Date, Time), "%d/%m/%Y %T")))
     }
+    par(cex=0.75, mar=c(5,4,4,2) + 0.2) # reduce font size, increase margin
     plot1 <- hist(mypowerdata$Global_active_power, col = "red", xlab = "Global Active Power (kilowatts)", main = "Global Active Power")
     dev.copy(png, "plot1.png", units = "px", width = 480, height = 480)
     dev.off()

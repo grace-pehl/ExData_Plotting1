@@ -1,7 +1,7 @@
 library(dplyr)
 library(data.table)
 
-plot2 <- function(){
+plot3 <- function(){
    if (!file.exists("household_power_consumption.txt")) {
         dataUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
         download.file(dataUrl, "household_power_consumption.zip")
@@ -28,11 +28,16 @@ plot2 <- function(){
                               DateTime = as.POSIXct(strptime(paste(Date, Time), "%d/%m/%Y %T")))
     }
     x <- mypowerdata$DateTime
-    y <- mypowerdata$Global_active_power
+    y1 <- mypowerdata$Sub_metering_1
+    y2 <- mypowerdata$Sub_metering_2
+    y3 <- mypowerdata$Sub_metering_3
     par(cex=0.75, mar=c(5,4,4,2) + 0.2) # reduce font size, increase margin
-    plot(x, y, type="n", xlab = NA, ylab = "Global Active Power (kilowatts)")
-    lines(x, y)
-    dev.copy(png, "plot2.png", units = "px", width = 480, height = 480)
+    plot(x, y1, type="n", ylab = "Energy sub metering", xlab = NA)
+    lines(x, y1)
+    lines(x, y2, col="red")
+    lines(x, y3, col="blue")
+    legend(x="topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty=c(1,1,1), lwd=c(1, 1, 1), col=c("black", "red", "blue"))
+    dev.copy(png, "plot3.png", units = "px", width = 480, height = 480)
     dev.off()
 }
 
